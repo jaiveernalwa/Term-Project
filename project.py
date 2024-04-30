@@ -84,6 +84,7 @@ class Enemy:
         if self.health <= 0:
             print(f"The {self.name} is defeated!")
 
+
 class ClearingScene(Scene):
     def __init__(self):
         super().__init__(
@@ -97,27 +98,44 @@ class ClearingScene(Scene):
 
 
 class Bandit(Enemy):
-  def __init__(self):
-    super().__init__("Bandit", 50, 15)
+    def __init__(self):
+        super().__init__("Bandit", 50, 15)
 
 
 class ForestScene(Scene):
     def __init__(self):
         super().__init__(
-            description="You stand in a dense forest. Sunlight struggles to penetrate the thick canopy of leaves above. The air is filled with the chirping of birds and the rustling of unseen creatures.",
+            description="You stand in a dense forest. Sunlight struggles to penetrate the thick canopy of leaves above. The air is filled with the chirping of birds and the rustling of unseen creatures. You see a glinting object on the ground.",
             exits={"north": "clearing"},
             actions={
-                "look": lambda p: print(
-                    "You see towering trees and a faint path leading north."
-                ),
+                "look": lambda p: print(p.description),  # Use player description method
+                "take sword": self.take_sword,  # New action to take the sword
                 "enemy": Goblin(),  # Enemy object defined in actions
             },
         )
 
+    def take_sword(self, player):
+        # Check if player doesn't have a weapon equipped
+        if not player.sword:
+            print("You pick up the sword.")
+            player.equip_sword()  # Call player's equip_sword method
+        else:
+            print("You are already wielding a weapon.")
+
+    def enter(self):
+        print(self.description)
+        # Update description to remove sword message after it's picked up
+        if self.actions.get("take sword"):  # Check if "take sword" action exists
+            self.description = self.description.replace(
+                ". You see a glinting object on the ground.", ""
+            )
+        super().enter()  # Call the parent class enter method
+
 
 class Goblin(Enemy):
-  def __init__(self):
-    super().__init__("Goblin", 30, 10)
+    def __init__(self):
+        super().__init__("Goblin", 30, 10)
+
 
 class Game:
     def __init__(self):
