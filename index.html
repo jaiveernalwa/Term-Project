@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        #question-container {
+            margin-top: 50px;
+        }
+        #score {
+            margin-top: 20px;
+        }
+        #lives {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Trivia Game</h1>
+    <div id="question-container">
+        <form action="/check_answer" method="post">
+            <label for="question">Question:</label>
+            <p id="question">What is the capital of France?</p>
+            <input type="text" id="answer" name="answer">
+            <button type="submit">Submit Answer</button>
+        </form>
+    </div>
+    <div id="score">
+        <p>Score: <span id="score-value">0</span></p>
+    </div>
+    <div id="lives">
+        <p>Lives: <span id="lives-value">3</span></p>
+    </div>
+</body>
+</html>
