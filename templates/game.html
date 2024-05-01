@@ -1,0 +1,20 @@
+<!-- templates/game.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Adventure Game</title>
+</head>
+<body>
+    <h2>{{ scene.description }}</h2>
+    <h3>Available Actions:</h3>
+    <form action="/game" method="POST">
+        {% for action in actions %}
+            <input type="radio" name="choice" value="{{ loop.index }}" id="choice{{ loop.index }}">
+            <label for="choice{{ loop.index }}">{{ action }}</label><br>
+        {% endfor %}
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
