@@ -1,36 +1,27 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
+from trivia import trivia_game
 
 app = Flask(__name__)
-
-# Dummy questions and answers
-questions = ["What is the capital of France?", "What is the largest mammal?", "What is 2 + 2?"]
-answers = ["paris", "blue whale", "4"]
-
-score = 0
-lives = 3
-current_question_index = 0
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/check_answer', methods=['POST'])
-def check_answer():
-    global score, lives, current_question_index
-    user_answer = request.form['answer'].lower()
-    correct_answer = answers[current_question_index]
+@app.route('/play', methods=['POST'])
+def play():
+    name = request.form['name']
+    trivia_game()
+    return redirect(url_for('play_game', name=name))
 
-    if user_answer == correct_answer:
-        score += 1
-    else:
-        lives -= 1
+@app.route('/play/<name>')
+def play_game(name):
+    return render_template('play.html', name=name, score=0, lives=3, question="")
 
-    current_question_index += 1
-    if current_question_index >= len(questions):
-        # Game over
-        return "Game Over! Final Score: {} Lives: {}".format(score, lives)
-
-    return render_template('index.html', question=questions[current_question_index], score=score, lives=lives)
+@app.route('/answer', methods=['POST'])
+def answer():
+    answer = request.form['answer']
+    # Can't process answer
+    return redirect(url_for('play_game'))
 
 if __name__ == '__main__':
     app.run(debug=True)

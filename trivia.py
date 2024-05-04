@@ -170,6 +170,5 @@ def trivia_game():
 def main():
     trivia_game()
 
-
 if __name__ == "__main__":
     main()
